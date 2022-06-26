@@ -84,7 +84,7 @@ class LandingScreen extends StatelessWidget {
     );
   }
 
- /* oncurrentloc_tap(BuildContext context) {
+  oncurrentloc_tap(BuildContext context) {
      Navigator.of(context).push(MaterialPageRoute(builder: (_) => CitySelectionScreen()));
-  }*/
+  }
 }
