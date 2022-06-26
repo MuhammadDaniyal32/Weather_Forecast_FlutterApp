@@ -53,6 +53,8 @@ class WeatherForcastService {
               return {
                 "tempC":Current.fromJson(decodedjson['current']).tempC,
                 "isDay":Current.fromJson(decodedjson['current']).isDay,
+                "country":Location.fromJson(decodedjson['location']).country,
+                "city":Location.fromJson(decodedjson['location']).name,
                 "conditionText":Current.fromJson(decodedjson['current']).condition?.text,
               };
             }
@@ -76,6 +78,21 @@ class WeatherForcastService {
 
         var response = await http.get(Uri.parse(
             api_urls.getforcast + position.latitude.toString() + ',' + position.longitude.toString() + '&days=1'));
+        if (response.statusCode == 200) {
+          var decodedjson = jsonDecode(response.body);
+
+          return{
+            "1":Forecast.fromJson(decodedjson['forecast']).forecastday![0].hour![0],
+            "2":Forecast.fromJson(decodedjson['forecast']).forecastday![0].hour![1],
+            "3":Forecast.fromJson(decodedjson['forecast']).forecastday![0].hour![2],
+            "4":Forecast.fromJson(decodedjson['forecast']).forecastday![0].hour![3],
+            "5":Forecast.fromJson(decodedjson['forecast']).forecastday![0].hour![5],
+          };
+        }
+    }
+    else if (City!=null){
+        var response = await http.get(Uri.parse(
+            api_urls.getforcast +City+ '&days=1'));
         if (response.statusCode == 200) {
           var decodedjson = jsonDecode(response.body);
 

@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 String? country,conditiontxt,city;
 double? tempC;
+bool isday=false;
 Hour? hour1,hour2,hour3,hour4,hour5;
 final dateFormat = DateFormat('h:mm a');
 
@@ -48,12 +49,32 @@ final dateFormat = DateFormat('h:mm a');
               conditiontxt = value['conditionText'];
               city = value['city'];
               tempC = value['tempC'];
-              country = value['country'];
+              var day = value['isDay'];
+              if(day==1)
+                {
+                  isday =true;
+                }
+              else
+                {
+                  isday = false;
+                }
             });
           }
       });
     }
     else if (widget.city != null) {
+      WeatherForcastService().getForecast(City: widget.city).then((value) {
+        if(value!= null)
+        {
+          setState(() {
+            hour1 = value['1'] as Hour;
+            hour2 = value['2'] as Hour;
+            hour3 = value['3'] as Hour;
+            hour4 = value['4'] as Hour;
+            hour5 = value['5'] as Hour;
+          });
+        }
+      });
         WeatherForcastService().getCurrentTemp(City: widget.city).then((value){
         if(value != null)
           {
@@ -63,6 +84,15 @@ final dateFormat = DateFormat('h:mm a');
               city = value['city'];
               tempC = value['tempC'];
               country = value['country'];
+              var day = value['isDay'];
+              if(day==1)
+              {
+                isday =true;
+              }
+              else
+              {
+                isday = false;
+              }
             });
           }
       });
@@ -88,7 +118,6 @@ final dateFormat = DateFormat('h:mm a');
                 children: [
                   VerticalSpacing(UIExt(context).screenHeight()*0.055),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       HorizontalSpacing(UIExt(context).screenWidth()*0.035),
                       GestureDetector(onTap: ()=>onrefresh_pressed(context),child: Icon(Icons.refresh,color: AppColors.whiteColor)),
@@ -108,7 +137,7 @@ final dateFormat = DateFormat('h:mm a');
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Night, $conditiontxt",style:TextStyle(fontSize: 22,fontWeight: FontWeight.w400,color: AppColors.whiteColor)),
+                      Text(isday?"Day":"Night"+", $conditiontxt",style:TextStyle(fontSize: 22,fontWeight: FontWeight.w400,color: AppColors.whiteColor)),
                     ],
                   ),
                   VerticalSpacing(UIExt(context).screenHeight()*0.35),
@@ -126,10 +155,10 @@ final dateFormat = DateFormat('h:mm a');
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text("Now",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text(dateFormat.format(DateTime.parse(hour2?.time??"")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text(dateFormat.format(DateTime.parse(hour3?.time??"")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text(dateFormat.format(DateTime.parse(hour4?.time??"")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text(dateFormat.format(DateTime.parse(hour5?.time??"")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text(dateFormat.format(DateTime.parse(hour2?.time??"2022-05-20 23:12:20.000")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text(dateFormat.format(DateTime.parse(hour3?.time??"2022-05-20 23:12:20.000")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text(dateFormat.format(DateTime.parse(hour4?.time??"2022-05-20 23:12:20.000")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text(dateFormat.format(DateTime.parse(hour5?.time??"2022-05-20 23:12:20.000")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
                     ],
                   ),
                   VerticalSpacing(UIExt(context).screenHeight()*0.030),
