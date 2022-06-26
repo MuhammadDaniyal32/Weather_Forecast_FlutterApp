@@ -4,9 +4,14 @@ import 'package:weather_app/utility/spacing.dart';
 import 'package:weather_app/utility/utils.dart';
 import 'package:weather_app/views/city_selection_screen.dart';
 
-class LandingScreen extends StatelessWidget {
+class LandingScreen extends StatefulWidget {
 
 
+  @override
+  State<LandingScreen> createState() => _LandingScreenState();
+}
+
+class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
