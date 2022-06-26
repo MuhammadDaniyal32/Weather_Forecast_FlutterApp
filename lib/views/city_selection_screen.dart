@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/utility/app_colors.dart';
 import 'package:weather_app/utility/utils.dart';
+import 'package:weather_app/views/home_screen.dart';
 import 'package:weather_app/widgets/List_Tile.dart';
 import '../utility/spacing.dart';
 class CitySelectionScreen extends StatelessWidget {
@@ -49,7 +50,7 @@ class CitySelectionScreen extends StatelessWidget {
 
           Expanded(
             child: ListView(children: [
-              List_Tile(title: "Current Location", color: Color(0xffF6F6F6),icon: Icon(Icons.my_location), onlist_tap: ()=>onlist_tap(),),
+              List_Tile(title: "Current Location", color: Color(0xffF6F6F6),icon: Icon(Icons.my_location), onlist_tap: ()=>onlist_tap(context),),
               List_Tile(title: "Karachi, Pakistan",color: Color(0xffF6F6F6), onlist_tap: () {  },),
               List_Tile(title: "Sydney, Australia",color: Color(0xffF6F6F6), onlist_tap: () {  },),
               List_Tile(title: "Barcelona, Argnetina",color: Color(0xffF6F6F6), onlist_tap: () {  },),
@@ -64,5 +65,7 @@ class CitySelectionScreen extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  onlist_tap() {}
+  onlist_tap(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => HomeScreen()));
+  }
 }
