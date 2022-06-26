@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/utility/app_colors.dart';
 import 'package:weather_app/utility/spacing.dart';
 import 'package:weather_app/utility/utils.dart';
+import 'package:weather_app/views/landing_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -32,7 +33,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Future.delayed(const Duration(seconds: 5), () => {
     Navigator.pushReplacement(
-    context, MaterialPageRoute(builder: (context) => LanddingScreen()));
-    });
+    context, MaterialPageRoute(builder: (context) => LandingScreen()))});
   }
 }
