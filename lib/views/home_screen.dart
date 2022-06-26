@@ -1,11 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/model/forecastmodel.dart';
 import 'package:weather_app/utility/app_colors.dart';
 import 'package:weather_app/utility/utils.dart';
 import 'package:weather_app/widgets/List_Tile.dart';
+import '../services/remoteservices/weather_forcast_service.dart';
 import '../utility/spacing.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  Position? position;
+  String? city;
+
+  HomeScreen({this.position, this.city});
+
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+String? country,conditiontxt,city;
+double? tempC;
+Hour? hour1,hour2,hour3,hour4,hour5;
+final dateFormat = DateFormat('h:mm a');
+
+  @override
+  void initState() {
+    if (widget.position != null) {
+      WeatherForcastService().getForecast(position: widget.position).then((value) {
+        if(value!= null)
+          {
+            setState(() {
+              hour1 = value['1'] as Hour;
+              hour2 = value['2'] as Hour;
+              hour3 = value['3'] as Hour;
+              hour4 = value['4'] as Hour;
+              hour5 = value['5'] as Hour;
+            });
+          }
+      });
+        WeatherForcastService().getCurrentTemp(position: widget.position).then((value){
+        if(value != null)
+          {
+            setState(() {
+              country = value['country'];
+              conditiontxt = value['conditionText'];
+              city = value['city'];
+              tempC = value['tempC'];
+              country = value['country'];
+            });
+          }
+      });
+    }
+    else if (widget.city != null) {
+        WeatherForcastService().getCurrentTemp(City: widget.city).then((value){
+        if(value != null)
+          {
+            setState(() {
+              country = value['country'];
+              conditiontxt = value['conditionText'];
+              city = value['city'];
+              tempC = value['tempC'];
+              country = value['country'];
+            });
+          }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +88,12 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   VerticalSpacing(UIExt(context).screenHeight()*0.055),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       HorizontalSpacing(UIExt(context).screenWidth()*0.035),
                       GestureDetector(onTap: ()=>onrefresh_pressed(context),child: Icon(Icons.refresh,color: AppColors.whiteColor)),
                       HorizontalSpacing(UIExt(context).screenWidth()*0.25),
-                      Text("Australia",style:TextStyle(fontSize: 22,fontWeight: FontWeight.w400,color: AppColors.whiteColor)),
+                      Text(country.toString(),style:TextStyle(fontSize: 22,fontWeight: FontWeight.w400,color: AppColors.whiteColor)),
                       HorizontalSpacing(UIExt(context).screenWidth()*0.01),
                       Image(image: AssetImage('assets/images/arrow_down.png'),height: 10,width: 18)
                     ],
@@ -39,13 +102,13 @@ class HomeScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("12°",style:TextStyle(fontSize: 100,fontWeight: FontWeight.w700,color: AppColors.whiteColor)),
+                      Text("$tempC°",style:TextStyle(fontSize: 100,fontWeight: FontWeight.w700,color: AppColors.whiteColor)),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Night, Clear Sky",style:TextStyle(fontSize: 22,fontWeight: FontWeight.w400,color: AppColors.whiteColor)),
+                      Text("Night, $conditiontxt",style:TextStyle(fontSize: 22,fontWeight: FontWeight.w400,color: AppColors.whiteColor)),
                     ],
                   ),
                   VerticalSpacing(UIExt(context).screenHeight()*0.35),
@@ -54,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                       HorizontalSpacing(UIExt(context).screenWidth()*0.025),
                       Text("Today",style:TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: AppColors.blackColor)),
                       Spacer(),
-                      Text("Sydney, Australia",style:TextStyle(fontSize: 18,fontWeight: FontWeight.w400,color: AppColors.darkgreyColor)),
+                      Text("$city,$country",style:TextStyle(fontSize: 18,fontWeight: FontWeight.w400,color: AppColors.darkgreyColor)),
                       HorizontalSpacing(UIExt(context).screenWidth()*0.025),
                     ],
                   ),
@@ -63,10 +126,10 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text("Now",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text("9PM",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text("10PM",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text("11PM",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text("12PM",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text(dateFormat.format(DateTime.parse(hour2?.time??"")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text(dateFormat.format(DateTime.parse(hour3?.time??"")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text(dateFormat.format(DateTime.parse(hour4?.time??"")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text(dateFormat.format(DateTime.parse(hour5?.time??"")),style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
                     ],
                   ),
                   VerticalSpacing(UIExt(context).screenHeight()*0.030),
@@ -84,11 +147,11 @@ class HomeScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("22°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text("20°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text("18°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text("22°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
-                      Text("16°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text("${hour1?.tempC}°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text("${hour2?.tempC}°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text("${hour3?.tempC}°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text("${hour4?.tempC}°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
+                      Text("${hour5?.tempC}°",style:TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)),
 
                     ],
                   )
@@ -99,4 +162,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   onrefresh_pressed(BuildContext context) {}
+
+
 }

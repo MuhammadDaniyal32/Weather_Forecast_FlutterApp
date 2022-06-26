@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/utility/app_colors.dart';
 import 'package:weather_app/utility/utils.dart';
-import 'package:weather_app/views/home_screen.dart';
 import 'package:weather_app/widgets/List_Tile.dart';
 import '../services/remoteservices/geolocator_service.dart';
 import 'package:geolocator/geolocator.dart';
+import '../services/remoteservices/weather_forcast_service.dart';
 import '../utility/spacing.dart';
+import 'home_screen.dart';
 class CitySelectionScreen extends StatelessWidget {
   const CitySelectionScreen({Key? key}) : super(key: key);
 
@@ -68,8 +69,10 @@ class CitySelectionScreen extends StatelessWidget {
   }
 
   onlist_tap(BuildContext context) {
-    //Navigator.of(context).push(MaterialPageRoute(builder: (_) => HomeScreen()));
+
     Future<Position> position=determinePosition();
-    position.then((value) => print(value));
+    position.then((value) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => HomeScreen(position:value)));
+    });
   }
 }

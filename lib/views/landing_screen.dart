@@ -74,7 +74,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   HorizontalSpacing(UIExt(context).screenWidth()*0.050),
-                  Text("Select Current Location",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500)),
+                  Text("Select City",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500,color: AppColors.whiteColor)),
                   Spacer(),
                   Icon(Icons.arrow_drop_down_outlined),
                   HorizontalSpacing(UIExt(context).screenWidth()*0.050),

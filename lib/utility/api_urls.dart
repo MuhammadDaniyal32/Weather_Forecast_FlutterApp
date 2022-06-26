@@ -1,6 +1,6 @@
 class api_urls{
   static const String baseUrl = 'http://api.weatherapi.com/v1/';
-  static const String apikey ='key=';
+  static const String apikey ='key=d362154f26234617a7864137222606';
 
   static const String getforcast = baseUrl+'forecast.json?'+apikey+'&q=';
 
