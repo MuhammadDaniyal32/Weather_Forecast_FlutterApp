@@ -1,16 +1,10 @@
-# weather_app
+# Weather Forecast App
 
-A new Flutter project.
+### Description:
 
-## Getting Started
+_This flutter application is my Hackathon Task held on 26 june 2022._
+- Implemented app UI with provided [Figma](https://www.figma.com/file/DTlZG2aTpXGTUpnw0tDmKp/weather-app) url
+- Integrated [WeatherAPI](https://www.weatherapi.com/docs/).
 
-This project is a starting point for a Flutter application.
+https://user-images.githubusercontent.com/55941433/185309884-90106197-7802-4344-b789-b1983dd2124a.mp4
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
